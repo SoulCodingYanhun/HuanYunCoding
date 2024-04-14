@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <header>
-      <v-app-bar :elevation="2">
+      <v-app-bar :elevation="2" scroll-behavior="hide">
         <template v-slot:prepend>
           <!-- 在这里可以添加一些前置内容，比如品牌Logo等 -->
         </template>
@@ -9,11 +9,22 @@
         <v-app-bar-title>幻云科技</v-app-bar-title>
 
         <template v-slot:append>
-          <!-- 使用v-btn创建图标按钮 -->
-          <v-btn icon="mdi-home"></v-btn>
-          <v-btn icon="mdi-api"></v-btn>
-          <v-btn icon="mdi-forum"></v-btn>
-          <v-btn icon="mdi-account-circle-outline"></v-btn>
+          <!-- 如果已登录，显示图标 -->
+          <div v-if="isLoggedIn">
+            <v-btn v-for="icon in socialIcons" :key="icon" icon>
+              <v-icon>{{ icon }}</v-icon>
+            </v-btn>
+          </div>
+
+          <!-- 否则显示登入/注册按钮 -->
+          <div v-else>
+            <v-btn icon="mdi-home" @click="goToHome"></v-btn>
+            <v-btn icon="mdi-api" @click="goToApi"></v-btn>
+            <v-btn icon="mdi-forum" @click="goToForum"></v-btn>
+            <router-link to="/user/login" custom v-slot="{ navigate }">
+              <v-btn @click="navigate">登入/注册</v-btn>
+            </router-link>
+          </div>
         </template>
       </v-app-bar>
     </header>
@@ -23,12 +34,52 @@
       <router-view></router-view>
     </v-main>
 
-    <footer>
-      <!-- 在这里添加页脚内容 -->
-    </footer>
+    <v-footer class="d-flex flex-column">
+      <div class="px-4 py-2 bg-black text-center w-100">
+        {{ currentYear }} — <strong>幻云科技 HuanYunCoding</strong>
+      </div>
+    </v-footer>
   </v-app>
 </template>
 
-<script setup>
-// 如果需要在此处添加逻辑，可以在此编写JavaScript
+<script>
+export default {
+  data() {
+    return {
+      socialIcons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],
+      navIcons: [
+        'mdi-home',
+        'mdi-api',
+        'mdi-forum',
+        'mdi-account-circle-outline'
+      ],
+      currentYear: new Date().getFullYear(),
+    };
+  },
+  computed: {
+    isLoggedIn() {
+      // 假设登录状态是通过名为 'isLoggedIn' 的 cookie 来判断的
+      return document.cookie.includes('isLoggedIn=true');
+    }
+  },
+  methods: {
+    goToHome() {
+      // 跳转到首页的逻辑
+      this.$router.push('/');
+    },
+    goToApi() {
+      // 跳转到API页面的逻辑
+      this.$router.push('/api');
+    },
+    goToForum() {
+      // 跳转到论坛页面的逻辑
+      this.$router.push('/forum');
+    }
+  }
+};
 </script>

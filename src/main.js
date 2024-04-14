@@ -1,28 +1,37 @@
-/**
- * main.js
- *
- * Bootstraps Vuetify and other plugins then mounts the App
- */
+// main.js
+// 导入Vue应用所需的所有插件、组件和工具
 
-// Plugins
-import { registerPlugins } from '@/plugins'
+// Vue相关
+import { createApp } from 'vue';
+import { registerPlugins } from '@/plugins';
 
-// Components
-import App from './App.vue'
+// 第三方组件和样式
+import DevUI from 'vue-devui';
+import 'vue-devui/style.css';
+import '@devui-design/icons/icomoon/devui-icon.css';
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+import PrimeVue from 'primevue/config';
+import cookies from 'vue-cookies';
 
-// Router
-import router from './router'
+// 自定义组件
+import App from './App.vue';
 
-// Composables
-import { createApp } from 'vue'
+// 路由
+import router from './router';
 
-const app = createApp(App)
+// 创建Vue应用实例
+const vueApp = createApp(App);
 
-// 注册插件
-registerPlugins(app)
+// 注册所有插件
+registerPlugins(vueApp);
 
-// 使用路由器
-app.use(router)
-
-// 挂载应用
-app.mount('#app')
+// 使用路由器和第三方组件
+vueApp
+  .use(router)
+  .use(DevUI)
+  .use(ElementPlus)
+  .use(PrimeVue)
+  .use(cookies)
+  // 挂载应用
+  .mount('#app');

@@ -1,16 +1,47 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
+// 定义路由路径和组件
 const routes = [
-  { path: '/', component: () => import('../view/Home.vue') },
-  { path: '/api', component: () => import('../view/API.vue') },
-  { path: '/forum', component: () => import('../view/Forum.vue') },
-  { path: '/user/me', component: () => import('../view/User.vue') },
-  { path: '/user/me/login', component: () => import('../view/Login.vue') },
-  { path: '/user/me/register', component: () => import('../view/Register.vue') },
+  {
+    name: 'Home',
+    path: '/',
+    component: () => import('@/view/Home.vue')
+  },
+  {
+    name: 'API',
+    path: '/api',
+    component: () => import('@/view/API.vue')
+  },
+  {
+    name: 'Forum',
+    path: '/forum',
+    component: () => import('@/view/Forum.vue')
+  },
+  {
+    name: 'UserProfile',
+    path: '/user/me',
+    component: () => import('@/view/User.vue')
+  },
+  {
+    name: 'Login',
+    path: '/user/login',
+    component: () => import('../view/Login.vue')
+  },
+  {
+    name: 'Register',
+    path: '/user/register',
+    component: () => import('../view/Register.vue')
+  },
+  {
+    name: 'OtherLoginRegister',
+    path: '/user/lr',
+    component: () => import('../view/OtherLoginRegister.vue')
+  }
 ]
 
+// 创建路由实例，使用哈希模式
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   routes,
 })
 
