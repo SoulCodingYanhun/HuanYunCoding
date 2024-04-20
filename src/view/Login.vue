@@ -33,6 +33,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+import VueCookie from 'vue-cookie';
+import { ElNotification } from 'element-plus'
 export default {
   data() {
     return {
@@ -41,12 +44,55 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      // 处理登录逻辑
-      console.log('用户名:', this.username);
-      console.log('密码:', this.password);
-      // 这里可以添加验证和API调用来处理登录
-    },
+    async submitForm() {
+      try {
+        const response = await fetch('https://huanyun-api.onrender.com/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password
+          })
+        });
+
+        if (response.status === 200) {
+          const data = await response.json();
+          ElNotification({
+            title: '用户登入',
+            message: `登入成功！${this.username}`,
+            position: 'bottom-right',
+          })
+          console.log(data);
+
+          // Set the cookie when login is successful
+          VueCookie.set('user', {
+            login: true,
+            username: this.username,
+            password: this.password
+          }, 30); // expires in 1 day
+          this.$router.push('/');
+        } else {
+          ElNotification({
+            title: '用户登入',
+            message: '登入失败,请检查用户名和密码是否正确',
+            type: 'error',
+            position: 'bottom-right',
+          })
+          // 处理登录失败的逻辑
+        }
+      } catch (error) {
+        console.error(error);
+        ElNotification({
+          title: '用户登入',
+          message: '登入失败,请稍后再试',
+          type: 'error',
+          position: 'bottom-right',
+        })
+        // 处理登录失败的逻辑
+      }
+    }
   },
 };
 </script>

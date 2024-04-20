@@ -14,9 +14,11 @@
             <v-btn v-for="icon in socialIcons" :key="icon" icon>
               <v-icon>{{ icon }}</v-icon>
             </v-btn>
+            <v-avatar>
+              <img src="https://example.com/profile-picture.jpg" alt="Profile Picture">
+            </v-avatar>
           </div>
 
-          <!-- 否则显示登入/注册按钮 -->
           <div v-else>
             <v-btn icon="mdi-home" @click="goToHome"></v-btn>
             <v-btn icon="mdi-api" @click="goToApi"></v-btn>
@@ -43,6 +45,7 @@
 </template>
 
 <script>
+import VueCookie from 'vue-cookie';
 export default {
   data() {
     return {
@@ -62,12 +65,14 @@ export default {
     };
   },
   computed: {
+
     isLoggedIn() {
-      // 假设登录状态是通过名为 'isLoggedIn' 的 cookie 来判断的
-      return document.cookie.includes('isLoggedIn=true');
+      const userCookie = VueCookie.get('user');
+      return userCookie && userCookie.login === true;
     }
   },
   methods: {
+
     goToHome() {
       // 跳转到首页的逻辑
       this.$router.push('/');
@@ -79,6 +84,12 @@ export default {
     goToForum() {
       // 跳转到论坛页面的逻辑
       this.$router.push('/forum');
+    }
+  },
+
+  mounted() {
+    if (!VueCookie.get('user')) {
+      VueCookie.set('user', { login: false, user: '', password: '' }, 1);
     }
   }
 };

@@ -5,22 +5,22 @@ const routes = [
   {
     name: 'Home',
     path: '/',
-    component: () => import('../view/Home.vue')
+    component: () => import('@/view/Home.vue')
   },
   {
     name: 'API',
     path: '/api',
-    component: () => import('../view/API.vue')
+    component: () => import('@/view/API.vue')
   },
   {
     name: 'Forum',
     path: '/forum',
-    component: () => import('../view/Forum.vue')
+    component: () => import('@/view/Forum.vue')
   },
   {
     name: 'UserProfile',
     path: '/user/me',
-    component: () => import('../view/User.vue')
+    component: () => import('@/view/User.vue')
   },
   {
     name: 'Login',
