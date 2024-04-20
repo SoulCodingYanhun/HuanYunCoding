@@ -36,12 +36,11 @@ const rules = ref({
 
 // 验证码相关
 const captcha = ref('');
-const captchaInput = ref('');
 
 // 生成验证码
 async function generateCaptcha() {
-  captcha.value = Math.random().toString(36).substring(2, 6).toUpperCase();
   try {
+    captcha.value = Math.floor(100000 + Math.random() * 900000).toString()
     const response = await fetch('https://huanyun-api.onrender.com/send-verification-code', {
       method: 'POST',
       headers: {
@@ -79,13 +78,22 @@ function validatePasswordConfirm(rule, value, callback) {
 
 // 提交表单
 const handleSubmit = () => {
-  // Frontend code example using fetch API to register a new user
+  if (formData.value.password!== formData.value.confirmPassword) {
+    this.$message.error('两次输入密码不一致');
+    return;
+  }
+  if (formData.value.captchaInput!== captcha.value) {
+    this.$message.error('验证码不正确');
+    return;
+  }
+
+  // 注册用户
   const userData = {
-    uuid: this.formData.username,
+    uuid: this.uuid,
     username: this.formData.username,
     password: this.formData.password,
     email: this.formData.email,
-    phone_number: '',
+    phone_number: '无',
     bio: '暂无简介',
     role: 'user'
   };
@@ -111,9 +119,6 @@ const handleSubmit = () => {
     });
 
 };
-
-// 初始化验证码
-generateCaptcha();
 </script>
 
 <template>
