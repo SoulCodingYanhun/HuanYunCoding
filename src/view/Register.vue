@@ -39,8 +39,24 @@ const captcha = ref('');
 const captchaInput = ref('');
 
 // 生成验证码
-function generateCaptcha() {
+async function generateCaptcha() {
   captcha.value = Math.random().toString(36).substring(2, 6).toUpperCase();
+  try {
+    const response = await fetch('https://huanyun-api.onrender.com/send-verification-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email: formData.value.email, verificationCode: captcha.value}),
+    });
+    if (response.ok) {
+      console.log('Verification code sent successfully');
+    } else {
+      console.error('Failed to send verification code');
+    }
+  } catch (error) {
+    console.error('Error sending verification code:', error);
+  }
 }
 
 // 验证码验证函数
@@ -63,8 +79,37 @@ function validatePasswordConfirm(rule, value, callback) {
 
 // 提交表单
 const handleSubmit = () => {
-  // 这里可以添加提交逻辑
-  console.log('Form Data:', formData.value);
+  // Frontend code example using fetch API to register a new user
+  const userData = {
+    uuid: this.formData.username,
+    username: this.formData.username,
+    password: this.formData.password,
+    email: this.formData.email,
+    phone_number: '',
+    bio: '暂无简介',
+    role: 'user'
+  };
+
+  fetch('https://huanyun-api.onrender.com/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data.message); // Output: User registered successfully
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
 };
 
 // 初始化验证码
@@ -91,7 +136,7 @@ generateCaptcha();
           </el-form-item>
           <el-form-item label="验证码" prop="captchaInput" class="captcha-container">
             <el-input v-model="formData.captchaInput"></el-input>
-            <v-btn>验证码</v-btn>
+            <v-btn @click="generateCaptcha">验证码</v-btn>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSubmit">注册</el-button>
