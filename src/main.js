@@ -20,6 +20,9 @@ import App from './App.vue';
 // 路由
 import router from './router';
 
+// Vue Clerk
+import { clerkPlugin } from 'vue-clerk/plugin'
+
 // 创建Vue应用实例
 const vueApp = createApp(App);
 
@@ -33,5 +36,8 @@ vueApp
   .use(ElementPlus)
   .use(PrimeVue)
   .use(cookies)
+  .use(clerkPlugin, {
+    publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+  })
   // 挂载应用
   .mount('#app');

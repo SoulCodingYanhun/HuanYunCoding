@@ -5,44 +5,44 @@ const routes = [
   {
     name: 'Home',
     path: '/',
-    component: () => import('@/view/Home.vue')  // 主页组件
+    component: () => import('../view/Home.vue')
   },
   {
     name: 'API',
     path: '/api',
-    component: () => import('@/view/API.vue')  // API页面组件
+    component: () => import('../view/API.vue')
   },
   {
     name: 'Forum',
     path: '/forum',
-    component: () => import('@/view/Forum.vue')  // 论坛页面组件
+    component: () => import('../view/Forum.vue')
   },
   {
     name: 'UserProfile',
     path: '/user/me',
-    component: () => import('@/view/User.vue')  // 用户个人资料页面组件
+    component: () => import('../view/User.vue')
   },
   {
     name: 'Login',
     path: '/user/login',
-    component: () => import('../view/Login.vue')  // 登录页面组件
+    component: () => import('../view/Login.vue')
   },
   {
     name: 'Register',
     path: '/user/register',
-    component: () => import('../view/Register.vue')  // 注册页面组件
+    component: () => import('../view/Register.vue')
   },
   {
     name: 'OtherLoginRegister',
     path: '/user/lr',
-    component: () => import('../view/OtherLoginRegister.vue')  // 其他登录注册页面组件
+    component: () => import('../view/OtherLoginRegister.vue')
   }
 ]
 
 // 创建路由实例，使用哈希模式
 const router = createRouter({
-  history: createWebHashHistory(),  // 使用哈希模式
-  routes,  // 路由路径和组件
+  history: createWebHashHistory(),
+  routes,
 })
 
 export default router

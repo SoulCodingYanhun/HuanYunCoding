@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-center align-center" style="height: 100vh; background-size: cover;">
+  <!--<div class="d-flex justify-center align-center" style="height: 100vh; background-size: cover;">
     <el-card class="pa-4" style="width: 400px; background-color: rgba(255, 255, 255, 0.8)">
       <div class="text-center mb-4">
         <h2 class="text-h4">欢迎登录</h2>
@@ -19,10 +19,13 @@
         <router-link to="/user/register" class="register-link">没有账号？立即注册</router-link>
       </div>
     </el-card>
-  </div>
+  </div>-->
+  <SignIn path="/sign-in" routing="path" sign-up-url="/sign-up" />
+
 </template>
 
 <script>
+import { SignIn } from 'vue-clerk'
 import axios from 'axios';
 import VueCookie from 'vue-cookie';
 import { ElNotification } from 'element-plus';
